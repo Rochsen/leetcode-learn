@@ -7,54 +7,55 @@
 # @lc code=start
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-
-        if not s:
-            return 0
-
-        # 搜索字符的指针
-        final_index = 0
-
-        # 不重复的最大长度
-        max_len = 1
-
-        while final_index != len(s):
-            tmp_max_uls = ""
-            for i in range(len(s[final_index: ])):
-                if s[final_index+i] not in tmp_max_uls:
-                    tmp_max_uls += s[final_index+i]
-                else:
-                    break
-
-            # 跳出循环后，计算字符数
-            tmp_res = len(tmp_max_uls)
+        # 哈希映射，存储字符到其最新索引的映射
+        char_index_map = {}
+        
+        # 左指针，表示当前无重复子串的起始位置
+        left = 0
+        
+        # 记录最大长度
+        max_len = 0
+        
+        # 右指针遍历字符串
+        for right in range(len(s)):
+            current_char = s[right]
             
-            # 替换指针位置
-            final_index += 1
+            # 如果当前字符已经在映射中，并且其上次出现的位置在左指针右侧（即在当前窗口内）
+            if current_char in char_index_map and char_index_map[current_char] >= left:
+                # 将左指针移动到重复字符上次出现位置的下一位
+                left = char_index_map[current_char] + 1
             
-            # 选择更大的那个输出
-            max_len = max(max_len, tmp_res)
-
-            print("tmp_max_uls: ", tmp_max_uls)
-            print("final_index:", final_index)
-
+            # 更新当前字符的最新索引
+            char_index_map[current_char] = right
+            
+            # 计算当前窗口长度，并更新最大长度
+            # 当前窗口长度为 right - left + 1
+            current_len = right - left + 1
+            if current_len > max_len:
+                max_len = current_len
+                
         return max_len
+# @lc code=end
 
 
 if __name__ == '__main__':
-    # t1 = Solution().lengthOfLongestSubstring("abcabcbb")
-    # print(t1)
+    sol = Solution()
+    
+    # 测试用例
+    t1 = sol.lengthOfLongestSubstring("abcabcbb")
+    print(f"abcabcbb: {t1}") # 期望输出: 3 ("abc")
 
-    # t2 = Solution().lengthOfLongestSubstring("bbbbb")
-    # print(t2)
+    t2 = sol.lengthOfLongestSubstring("bbbbb")
+    print(f"bbbbb: {t2}")     # 期望输出: 1 ("b")
 
-    # t3 = Solution().lengthOfLongestSubstring("pwwkew")
-    # print(t3)
+    t3 = sol.lengthOfLongestSubstring("pwwkew")
+    print(f"pwwkew: {t3}")    # 期望输出: 3 ("wke")
 
-    # t4 = Solution().lengthOfLongestSubstring("au")
-    # print(t4)
+    t4 = sol.lengthOfLongestSubstring("au")
+    print(f"au: {t4}")        # 期望输出: 2 ("au")
 
-    t5 = Solution().lengthOfLongestSubstring("dvdf")
-    print(t5)
-
-# @lc code=end
-
+    t5 = sol.lengthOfLongestSubstring("dvdf")
+    print(f"dvdf: {t5}")      # 期望输出: 3 ("vdf")
+    
+    t6 = sol.lengthOfLongestSubstring("")
+    print(f"empty: {t6}")     # 期望输出: 0
