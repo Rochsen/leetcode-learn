@@ -8,16 +8,20 @@ from typing import List
 # @lc code=start
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
+        votes = 0
+        for num in nums:
+            if votes == 0: x = num
+            print(f"x = {x}")
+            votes += 1 if num == x else -1
+            print(f"votes = {votes}")
+            
+        return x
 
-        dict_cnt = {}
-        
-        for n in nums:
-            if n in dict_cnt:
-                dict_cnt[n] += 1
-            else:
-                dict_cnt[n] = 1
 
-        return [k for k,v in dict_cnt.items() if v == max(dict_cnt.values())][0]
-        
 # @lc code=end
 
+
+if __name__ == '__main__':
+    sol = Solution()
+
+    print(sol.majorityElement([2,2,3]))
