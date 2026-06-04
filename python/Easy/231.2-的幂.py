@@ -3,15 +3,15 @@
 #
 # [231] 2 的幂
 #
+import math
+
 
 # @lc code=start
 class Solution:
-
-    BIG = 2**30
-
     def isPowerOfTwo(self, n: int) -> bool:
-        return n > 0 and Solution.BIG % n == 0
+        if n <= 0:
+            return False
+        return math.log2(n) == int(math.log2(n))
 
-        
+
 # @lc code=end
-
